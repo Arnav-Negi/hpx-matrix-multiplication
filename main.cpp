@@ -36,11 +36,14 @@ public:
     Matrix<T> operator*(Matrix<T> &otherMatrix) {
         assert(otherMatrix.m == n);
         Matrix<T> returnMatrix(m, otherMatrix.n);
-//        hpx::experimental::for_loop(hpx::execution::par, 0, n, )
-        for (unsigned int i = 0; i < m; i++)
-            for (unsigned int j = 0; j < n; j++)
-                for (unsigned int k = 0; k < otherMatrix.n; k++)
+
+        hpx::experimental::for_loop(hpx::execution::par, 0, m, [&](unsigned int i){
+            hpx::experimental::for_loop(hpx::execution::par, 0, n, [&](unsigned int j){
+                hpx::experimental::for_loop(hpx::execution::par, 0, otherMatrix.n, [&](unsigned int k){
                     returnMatrix.entry(i, k) += matrix[i * n + j] * otherMatrix.entry(j, k);
+                });
+            });
+        });
 
         return returnMatrix;
     }
