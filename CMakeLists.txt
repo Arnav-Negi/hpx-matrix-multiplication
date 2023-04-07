@@ -1,13 +1,5 @@
-# Require a recent version of cmake
-cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
-
-# HPX install dir, change as per install location
-set(HPX_INCLUDE_DIR /usr/local/include/)
-set(HPX_LIBRARY_DIR /home/arnav/)
-
-# This project is C++ based.
-project(mat_mul
-        VERSION 1
-        DESCRIPTION "Parallelized matrix multiplication using HPX."
-        LANGUAGES CXX)
-
+cmake_minimum_required(VERSION 3.18)
+project(matrix_mult CXX)
+find_package(HPX REQUIRED)
+add_executable(matrix_mult main.cpp)
+target_link_libraries(matrix_mult HPX::hpx HPX::wrap_main HPX::iostreams_component)
